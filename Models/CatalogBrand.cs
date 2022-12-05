@@ -1,6 +1,10 @@
 ﻿namespace MyShop.Models
 {
-    public class CatalogBrand
+    public sealed class CatalogBrand
     {
+        //TODO replace GUID
+        public int Id { get; set; }
+
+
     }
 }
