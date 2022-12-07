@@ -11,8 +11,9 @@
         public CatalogType? CatalogType { get; set; }
         public CatalogBrand CatalogBrand { get; set; }
 
-        public CatalogItem(string name, string description, decimal price, string pictureUrl)
+        public CatalogItem(int id, string name, string description, decimal price, string pictureUrl)
         {
+            Id = id;
             Name = name;
             Description = description;
             Price = price;
