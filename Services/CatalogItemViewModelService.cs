@@ -5,9 +5,20 @@ namespace MyShop.Services
 {
     public class CatalogItemViewModelService : ICatalogItemViewModelService
     {
-        void ICatalogItemViewModelService.UpdateCatalogItem(CatalogItemViewModel catalogItemViewModel)
+        private readonly IRepository<CatalogItem> _catalogItemRepository;
+
+        public CatalogItemViewModelService()
         {
-            throw new NotImplementedException();
+            _catalogItemRepository = new LocalCatalogItemRepository();
+        }
+        public void UpdateCatalogItem(CatalogItemViewModel viewModel)
+        {
+            var existingCatalogItem = _catalogItemRepository.GetById(viewModel.Id);
+
+            if (existingCatalogItem is null) throw new Exception($"Catalog item {viewModel.Id} not found");
+
+            CatalogItem.CatalogItemDetails details = new(viewModel.Name, viewModel.Price);
+
         }
     }
 }
