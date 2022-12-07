@@ -19,5 +19,25 @@
             Price = price;
             PictureUrl = pictureUrl;
         }
+
+        public void UpdateDetails(CatalogItemDetails details)
+        {
+            Name = details.Name;
+            Price = details.Price;
+        }
+
+        public readonly record struct CatalogItemDetails
+        {
+            public string? Name { get; }
+            public string? Description { get; }
+            public decimal Price { get; }
+
+            public CatalogItemDetails(string? name, string? description, decimal price)
+            {
+                Name = name;
+                Description = description;
+                Price = price;
+            }
+        }
     }
 }
