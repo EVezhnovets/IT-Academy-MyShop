@@ -7,9 +7,9 @@ namespace MyShop.Services
     {
         private readonly IRepository<CatalogItem> _catalogItemRepository;
 
-        public CatalogItemViewModelService()
+        public CatalogItemViewModelService(IRepository<CatalogItem> catalogItemRepository)
         {
-            _catalogItemRepository = new LocalCatalogItemRepository();
+            _catalogItemRepository = catalogItemRepository;
         }
         public void UpdateCatalogItem(CatalogItemViewModel viewModel)
         {
@@ -17,7 +17,8 @@ namespace MyShop.Services
 
             if (existingCatalogItem is null) throw new Exception($"Catalog item {viewModel.Id} not found");
 
-            CatalogItem.CatalogItemDetails details = new(viewModel.Name, viewModel.Price);
+            CatalogItem.CatalogItemDetails detail = new(viewModel.Name, viewModel.Price);
+            existingCatalogItem.UpdateDetails(detail);
 
         }
     }
