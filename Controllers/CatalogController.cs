@@ -27,9 +27,6 @@ namespace MyShop.Controllers
                 PictureUrl = item.PictureUrl,
                 Price = item.Price
             }).ToList();
-
-
-
             return View(catalogItemsViewModel);
         }
 
