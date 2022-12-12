@@ -19,6 +19,7 @@ namespace MyShop.Services
 
             CatalogItem.CatalogItemDetails detail = new(viewModel.Name, viewModel.Price);
             existingCatalogItem.UpdateDetails(detail);
+            _catalogItemRepository.Update(existingCatalogItem);
 
         }
     }

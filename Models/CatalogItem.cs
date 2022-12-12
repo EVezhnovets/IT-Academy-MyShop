@@ -29,13 +29,11 @@
         public readonly record struct CatalogItemDetails
         {
             public string? Name { get; }
-            public string? Description { get; }
             public decimal Price { get; }
 
-            public CatalogItemDetails(string? name, string? description, decimal price)
+            public CatalogItemDetails(string? name, decimal price)
             {
                 Name = name;
-                Description = description;
                 Price = price;
             }
         }
