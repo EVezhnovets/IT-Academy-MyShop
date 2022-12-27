@@ -1,4 +1,4 @@
-﻿namespace MyShop.Models
+﻿namespace MyShop.ApplicationCore.Entities
 {
     public sealed class CatalogType
     {
