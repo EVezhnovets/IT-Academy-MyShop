@@ -1,4 +1,6 @@
-﻿namespace MyShop.Models
+﻿using MyShop.ApplicationCore.Entities;
+
+namespace MyShop.Models
 {
     public sealed class CatalogItem
     {
