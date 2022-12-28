@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyShop.ApplicationCore.Entities;
-using MyShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

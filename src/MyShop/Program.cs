@@ -1,15 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using MyShop.ApplicationCore.Entities;
 using MyShop.Configuration;
 using MyShop.Infrastructure.Data;
 using MyShop.Interfaces;
-using MyShop.Models;
 using MyShop.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 MyShop.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
-// Add services to the container.
+// Add services to the DI container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddCoreServices();
@@ -19,6 +19,7 @@ builder.Services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelSer
 var app = builder.Build();
 
 app.Logger.LogInformation("Database migraion running...");
+//What is this for?
 using (var scope = app.Services.CreateScope())
 {
     var scopedProvider = scope.ServiceProvider;

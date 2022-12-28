@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyShop.ApplicationCore.Entities;
 using MyShop.Interfaces;
 using MyShop.Models;
 using MyShop.Services;
@@ -17,7 +18,7 @@ namespace MyShop.Controllers
             _catalogItemViewModelService = catalogItemViewModelService;
             _catalogRepository = catalogRepository;
         }
-
+        
         public IActionResult Index()
         {
             var catalogItemsViewModel = _catalogRepository.GetAll().Select(item => new CatalogItemViewModel()
