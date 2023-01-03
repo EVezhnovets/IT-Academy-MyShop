@@ -12,8 +12,8 @@ using MyShop.Infrastructure.Data;
 namespace MyShop.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20221226181630_InitialSchema")]
-    partial class InitialSchema
+    [Migration("20230102040723_InitialSchema2")]
+    partial class InitialSchema2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
