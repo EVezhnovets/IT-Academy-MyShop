@@ -1,24 +1,26 @@
 using Microsoft.EntityFrameworkCore;
+using MyShop.ApplicationCore.Entities;
+using MyShop.ApplicationCore.Interfaces;
 using MyShop.Configuration;
 using MyShop.Infrastructure.Data;
 using MyShop.Interfaces;
-using MyShop.Models;
 using MyShop.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 MyShop.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
-// Add services to the container.
+// Add services to the DI container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddCoreServices();
-builder.Services.AddScoped(typeof(IRepository<CatalogItem>), typeof(LocalCatalogItemRepository));
+builder.Services.AddScoped(typeof(IRepository<CatalogItem>), typeof(EfRepository<CatalogItem>));
 builder.Services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelService>();
 
 var app = builder.Build();
 
 app.Logger.LogInformation("Database migraion running...");
+//What is this for?
 using (var scope = app.Services.CreateScope())
 {
     var scopedProvider = scope.ServiceProvider;
@@ -29,6 +31,7 @@ using (var scope = app.Services.CreateScope())
         {
             catalogContext.Database.Migrate();
         }
+        await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
     }
     catch (Exception ex)
     {

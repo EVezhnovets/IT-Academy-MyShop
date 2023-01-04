@@ -1,4 +1,6 @@
-﻿using MyShop.Interfaces;
+﻿using MyShop.ApplicationCore.Entities;
+using MyShop.Interfaces;
+using MyShop.ApplicationCore.Interfaces;
 using MyShop.Models;
 
 namespace MyShop.Services
@@ -28,6 +30,11 @@ namespace MyShop.Services
         public List<CatalogItem> GetAll()
         {
             return _catalogItems;
+        }
+
+        public Task<List<CatalogItem>> GetAllAsync()
+        {
+            throw new NotImplementedException();
         }
 
         public CatalogItem? GetById(int id)
