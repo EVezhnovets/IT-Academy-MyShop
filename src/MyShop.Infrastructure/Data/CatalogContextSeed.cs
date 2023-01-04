@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyShop.ApplicationCore.Entities;
-using MyShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
