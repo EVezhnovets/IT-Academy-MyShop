@@ -14,7 +14,7 @@ MyShop.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, buil
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddCoreServices();
-builder.Services.AddScoped(typeof(IRepository<CatalogItem>), typeof(EfRepository<CatalogItem>));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelService>();
 
 var app = builder.Build();
@@ -61,7 +61,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Catalog}/{action=Index}/{id?}");
 
 app.Logger.LogDebug("Starting the app... ");
 app.Run();
