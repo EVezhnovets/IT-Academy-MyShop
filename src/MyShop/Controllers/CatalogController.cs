@@ -20,10 +20,11 @@ namespace MyShop.Controllers
             _catalogRepository = catalogRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CatalogIndexViewModel model)
         {
-            var catalogItemsViewModel = await _catalogItemViewModelService.GetCatalogItems();
-            return View(catalogItemsViewModel);
+            
+            var viewModel = await _catalogItemViewModelService.GetCatalogItems(model.BrandFilterApplied, model.TypesFilterApplied);
+            return View(viewModel);
         }
 
         public IActionResult Details(int id)

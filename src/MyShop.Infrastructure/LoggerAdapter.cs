@@ -14,7 +14,7 @@ namespace MyShop.Infrastructure
 
         public LoggerAdapter(ILoggerFactory loggerFactory)
         {
-
+            _logger = loggerFactory.CreateLogger<T>();
         }
 
         public void LogError(Exception exception, string message, params object[] args)
