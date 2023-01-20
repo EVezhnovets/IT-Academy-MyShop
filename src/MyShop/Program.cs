@@ -3,12 +3,23 @@ using MyShop.ApplicationCore.Entities;
 using MyShop.ApplicationCore.Interfaces;
 using MyShop.Configuration;
 using MyShop.Infrastructure.Data;
+using MyShop.Infrastructure.Identity;
 using MyShop.Interfaces;
 using MyShop.Services;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//???
+var connectionString = builder.Configuration.GetConnectionString("AppIdentityDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppIdentityDbContextConnection' not found.");
+
+builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(connectionString));
+
 MyShop.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+
+//Configure Identity 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<AppIdentityDbContext>();
 
 // Add services to the DI container.
 builder.Services.AddControllersWithViews();
@@ -20,7 +31,7 @@ builder.Services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelSer
 var app = builder.Build();
 
 app.Logger.LogInformation("Database migraion running...");
-//What is this for?
+
 using (var scope = app.Services.CreateScope())
 {
     var scopedProvider = scope.ServiceProvider;
@@ -32,6 +43,12 @@ using (var scope = app.Services.CreateScope())
             catalogContext.Database.Migrate();
         }
         await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
+
+        var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>(); 
+        if (identityContext.Database.IsSqlServer())
+        {
+            identityContext.Database.Migrate();
+        }
     }
     catch (Exception ex)
     {
