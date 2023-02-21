@@ -3,24 +3,44 @@ using MyShop.ApplicationCore.Entities;
 using MyShop.ApplicationCore.Interfaces;
 using MyShop.Configuration;
 using MyShop.Infrastructure.Data;
+using MyShop.Infrastructure.Identity;
 using MyShop.Interfaces;
 using MyShop.Services;
+using Microsoft.AspNetCore.Identity;
+using MyShop.ApplicationCore.Services;
+using MyShop.ApplicationCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+////???
+////var connectionString = builder.Configuration.GetConnectionString("AppIdentityDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppIdentityDbContextConnection' not found.");
+
+//builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(connectionString));
+
 MyShop.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
+//Configure Identity 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddDefaultUI()
+    .AddEntityFrameworkStores<AppIdentityDbContext>()
+    .AddDefaultTokenProviders();
+
+
 // Add services to the DI container.
+builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddCoreServices();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelService>();
+// Add UriComposer service
+builder.Services.AddSingleton<IUriComposer>(new UriComposer(builder.Configuration.Get<CatalogSettings>()));
+//builder.Services.AddScoped<IBasketService, BasketService>();
 
 var app = builder.Build();
 
 app.Logger.LogInformation("Database migraion running...");
-//What is this for?
+
 using (var scope = app.Services.CreateScope())
 {
     var scopedProvider = scope.ServiceProvider;
@@ -32,6 +52,12 @@ using (var scope = app.Services.CreateScope())
             catalogContext.Database.Migrate();
         }
         await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
+
+        var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>(); 
+        if (identityContext.Database.IsSqlServer())
+        {
+            identityContext.Database.Migrate();
+        }
     }
     catch (Exception ex)
     {
@@ -62,6 +88,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Catalog}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Logger.LogDebug("Starting the app... ");
 app.Run();
