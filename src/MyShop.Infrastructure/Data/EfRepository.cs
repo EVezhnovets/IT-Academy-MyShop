@@ -3,6 +3,7 @@ using MyShop.ApplicationCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +25,11 @@ namespace MyShop.Infrastructure.Data
             return entity;  
         }
 
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbContext.Set<T>().FirstOrDefaultAsync(predicate);
+        }
+
         public List<T> GetAll()
         {
             throw new NotImplementedException();
@@ -42,6 +48,12 @@ namespace MyShop.Infrastructure.Data
         public void Update(T entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            _dbContext.Set<T>().Update(entity);
+            await _dbContext.SaveChangesAsync(); 
         }
     }
 }

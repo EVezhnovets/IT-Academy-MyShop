@@ -9,6 +9,6 @@ namespace MyShop.ApplicationCore.Interfaces
 {
     public interface IBasketService
     {
-        Task<Basket> AddItem2Basket(string userName);
+        Task<Basket> AddItem2Basket(string userName, int catalogItemId, decimal price, int quantity = 1);
     }
 }
