@@ -6,5 +6,6 @@
         void Update(T entity);
         List<T> GetAll();
         Task<List<T>> GetAllAsync();
+        Task<T> AddAsync(T entity);
     }
 }

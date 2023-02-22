@@ -9,29 +9,44 @@ namespace MyShop.Controllers
 {
     public class CatalogController : Controller
     {
-        
+
         private readonly ICatalogItemViewModelService _catalogItemViewModelService;
         private readonly IRepository<CatalogItem> _catalogRepository;
+        private readonly IBasketService _basketService;
 
-        public CatalogController(IRepository<CatalogItem> catalogRepository, ICatalogItemViewModelService catalogItemViewModelService)
+        public CatalogController(
+            IRepository<CatalogItem> catalogRepository, 
+            ICatalogItemViewModelService catalogItemViewModelService, 
+            IBasketService basketService)
         {
-            //TODO replace to IoC approach
             _catalogItemViewModelService = catalogItemViewModelService;
             _catalogRepository = catalogRepository;
+            _basketService = basketService;
         }
 
-        public async Task<IActionResult> Index(CatalogIndexViewModel model)
+        [HttpGet]
+        public async Task<IActionResult> Index(int? brandFilterApplied, int? typeFilterApplied)
         {
-            
-            var viewModel = await _catalogItemViewModelService.GetCatalogItems(model.BrandFilterApplied, model.TypesFilterApplied);
+            var userName = GetOrSetBasketCookieAndUserName();
+
+            var viewModel = await _catalogItemViewModelService.GetCatalogItems(brandFilterApplied, typeFilterApplied);
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(int id)
+        {
+            var userName = GetOrSetBasketCookieAndUserName();
+            var basket = _basketService.AddItem2Basket(userName);
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult Details(int id)
         {
             var item = _catalogRepository.GetById(id);
             if (item == null) return RedirectToAction("Index");
-            
+
             var result = new CatalogItemViewModel()
             {
                 Id = item.Id,
@@ -43,7 +58,7 @@ namespace MyShop.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit (int id)
+        public IActionResult Edit(int id)
         {
             var item = _catalogRepository.GetById(id);
             if (item == null) return RedirectToAction("Index");
@@ -72,6 +87,33 @@ namespace MyShop.Controllers
 
                 return View();
             }
+        }
+
+        private string GetOrSetBasketCookieAndUserName()
+        {
+            string? userName = default;
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return Request.HttpContext.User.Identity.Name;
+            }
+            if (Request.Cookies.ContainsKey("eShop"))
+            {
+                userName = Request.Cookies["eShop"];
+
+                if (!Request.HttpContext.User.Identity.IsAuthenticated)
+                {
+                    userName = default;
+                }
+
+            }
+
+            if (userName != null) return userName;
+
+            userName = Guid.NewGuid().ToString();
+            var cookieOptions = new CookieOptions();
+            cookieOptions.Expires = DateTime.Now.AddDays(30);
+            Response.Cookies.Append("eShop", userName, cookieOptions);
+            return userName;
         }
     }
 }

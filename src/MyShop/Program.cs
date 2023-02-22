@@ -35,7 +35,8 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelService>();
 // Add UriComposer service
 builder.Services.AddSingleton<IUriComposer>(new UriComposer(builder.Configuration.Get<CatalogSettings>()));
-//builder.Services.AddScoped<IBasketService, BasketService>();
+
+builder.Services.AddScoped<IBasketService, BasketService>();
 
 var app = builder.Build();
 

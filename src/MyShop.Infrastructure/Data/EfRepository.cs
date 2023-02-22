@@ -17,6 +17,13 @@ namespace MyShop.Infrastructure.Data
             _dbContext = dbContext;
         }
 
+        public async Task<T> AddAsync(T entity)
+        {
+            var result = await _dbContext.AddAsync<T>(entity);
+            _ = await _dbContext.SaveChangesAsync();
+            return entity;  
+        }
+
         public List<T> GetAll()
         {
             throw new NotImplementedException();
