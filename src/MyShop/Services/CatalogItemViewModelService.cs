@@ -53,6 +53,11 @@ namespace MyShop.Services
            return vm;
         }
 
+        public async Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemPage, int? brandId, int? typeId)
+        {
+            return await GetCatalogItems(brandId, typeId);  
+        }
+
         public async Task<IEnumerable<SelectListItem>> GetTypes()
         {
             _logger.LogInformation("Get types called");

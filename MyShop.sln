@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop", "src\MyShop\MyShop.csproj", "{2FCF6320-7D1B-42A3-AC71-C5CBD0427887}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ApplicationCore", "src\MyShop.ApplicationCore\MyShop.ApplicationCore.csproj", "{BFA365CE-65E5-46FE-B09E-73D5B93B7419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ApplicationCore", "src\MyShop.ApplicationCore\MyShop.ApplicationCore.csproj", "{BFA365CE-65E5-46FE-B09E-73D5B93B7419}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.Infrastructure", "src\MyShop.Infrastructure\MyShop.Infrastructure.csproj", "{535D0670-D192-4487-BCDC-2B024C21B5B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.Infrastructure", "src\MyShop.Infrastructure\MyShop.Infrastructure.csproj", "{535D0670-D192-4487-BCDC-2B024C21B5B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
